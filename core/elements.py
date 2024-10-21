@@ -1,48 +1,56 @@
 import json
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+from pathlib import Path
+
 
 class Signal_information(object):
-    def __init__(self):
-        pass
+    def __init__(self, signal_power: float, path: list):
+        self._signal_power = signal_power
+        self._noise_power = 0.0
+        self._latency = 0.0
+        self._path = path
 
     @property
     def signal_power(self):
-        pass
+        return self._signal_power
 
-    def update_signal_power(self):
-        pass
+    def update_signal_power(self, update: float):
+        self._signal_power += update
 
     @property
     def noise_power(self):
-        pass
+        return self._noise_power
 
     @noise_power.setter
-    def noise_power(self):
-        pass
+    def noise_power(self, value):
+        self._noise_power = value
 
-    def update_noise_power(self):
-        pass
+    def update_noise_power(self, update: float):
+        self._noise_power += update
 
     @property
     def latency(self):
-        pass
+        return self._latency
 
     @latency.setter
-    def latency(self):
-        pass
+    def latency(self, value):
+        self._latency = value
 
-    def update_latency(self):
-        pass
+    def update_latency(self, update: float):
+        self._latency += update
 
     @property
     def path(self):
-        pass
+        return self._path
 
     @path.setter
-    def path(self):
-        pass
+    def path(self, value):
+        self._path = value
 
-    def update_path(self):
-        pass
+    def update_path(self, update: list):
+        self._path += update
 
 
 class Node(object):
@@ -132,3 +140,7 @@ class Network(object):
     # and returns the modified spectral information
     def propagate(self, signal_information):
         pass
+
+
+
+
