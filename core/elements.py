@@ -253,6 +253,39 @@ class Network(object):
         return signal
 
 
+    def calculate_paths_info(self) -> pd.DataFrame:
+        """
+        Calculate latency, noise, and SNR for all paths in the network.
+
+        :return: A Pandas DataFrame containing paths, latency, noise, and SNR.
+        """
+        data = []
+
+        # Loop through all pairs of nodes
+        for start_label in self.nodes.keys():
+            for end_label in self.nodes.keys():
+                if start_label != end_label:
+                    paths = self.find_paths(start_label, end_label)
+
+                    for path in paths:
+                        # Create a signal to propagate
+                        signal = Signal_information(signal_power=1.0, path=path)  # Example signal power of 1.0
+                        self.propagate(signal, path)  # Propagate the signal through the found path
+
+                        # Calculate SNR in dB
+                        snr = 10 * np.log10(signal.signal_power / signal.noise_power) if signal.noise_power > 0 else float('inf')
+
+                        # Append the path information to the data list
+                        data.append({
+                            'Path': " -> ".join(path),
+                            'Latency (s)': signal.latency,
+                            'Noise Power': signal.noise_power,
+                            'SNR (dB)': snr
+                        })
+
+        # Create DataFrame from collected data
+        df = pd.DataFrame(data)
+        return df
 
     def draw(self):
         """

@@ -52,6 +52,8 @@ else:
 # Draw the network topology
 network.draw()
 
+path_info_df = network.calculate_paths_info()
+print(path_info_df)
 
 # Load the Network from the JSON file, connect nodes and lines in Network.
 # Then propagate a Signal Information object of 1mW in the network and save the results in a dataframe.
