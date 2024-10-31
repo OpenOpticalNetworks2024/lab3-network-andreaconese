@@ -121,7 +121,7 @@ class Line(object):
     def latency_generation(self):
         # Assuming 'c' is the speed of light (approximately 3e8 m/s)
         c = 3e8  # speed of light in m/s
-        latency = (2/3) * c * self._length
+        latency = self._length / (2/3 * c)
         return latency
 
     def noise_generation(self, signal_power: float):
