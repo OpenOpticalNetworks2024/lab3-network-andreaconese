@@ -1,13 +1,9 @@
 import numpy as np
-import matplotlib.pyplot as plt
 import pandas as pd
 from pathlib import Path
 import sys
-from core.elements import Signal_information, Node, Network
-from pathlib import Path
+from core.elements import Signal_information, Network  # Assicurati che il percorso sia corretto
 import json
-
-
 
 # Exercise Lab3: Network
 
@@ -15,8 +11,6 @@ ROOT = Path(__file__).parent.parent
 sys.path.append(str(ROOT))
 INPUT_FOLDER = ROOT / 'resources'
 file_input = INPUT_FOLDER / 'nodes.json'
-
-
 
 # Load the network from the JSON file
 network = Network(file_input)
@@ -37,11 +31,11 @@ for path in paths:
 initial_signal_power = 1.0  # Arbitrary signal power
 if paths:  # Check if there are any paths found
     path = paths[0]  # Select the first path found for testing
-    signal = Signal_information(signal_power=initial_signal_power, path=path)
+    signal = Signal_information(s_p=initial_signal_power, paths=path)
 
     # Propagate the signal along the specified path
     print("\nPropagating signal along the path:")
-    updated_signal = network.propagate(signal, path)
+    updated_signal = network.propagate(signal)
     print(f"Updated Signal Information:\n"
           f"  Signal Power: {updated_signal.signal_power}\n"
           f"  Noise Power: {updated_signal.noise_power}\n"
@@ -52,8 +46,14 @@ else:
 # Draw the network topology
 network.draw()
 
-path_info_df = network.calculate_paths_info()
+# Generate DataFrame with all path information
+path_info_df = network.data_frame()
+print("\nPath Information DataFrame:")
 print(path_info_df)
+
+# Save the DataFrame to a CSV file
+path_info_df.to_csv('weighted_path.csv', index=False)
+
 
 # Load the Network from the JSON file, connect nodes and lines in Network.
 # Then propagate a Signal Information object of 1mW in the network and save the results in a dataframe.
